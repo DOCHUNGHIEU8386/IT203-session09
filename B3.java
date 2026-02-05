@@ -1,55 +1,47 @@
-class Product{
-    private String productId;
-    private String productName;
-    private double price;
+public class Bai3 {
 
-    public Product(String productId , String productName , double price){
-        this.productId = productId;
-        this.productName = productName;
-        setPrice(price);
-    }
+    // ===== Lớp cha =====
+    static class Employee {
+        protected String name;
+        protected double basicSalary;
 
-    public String getProductId(){
-        return productId;
-    }
+        // Constructor có tham số
+        public Employee(String name, double basicSalary) {
+            this.name = name;
+            this.basicSalary = basicSalary;
+        }
 
-    public String getProductName(){
-        return productName;
-    }
-
-    public double getPrice(){
-        return price;
-    }
-
-    public void setPrice(double price){
-        if(price > 0){
-            this.price = price;
-        }else{
-            System.out.println("Gia san pham phai > 0");
-            System.out.println("---------------------");
+        public void displayInfo() {
+            System.out.println("Tên: " + name);
+            System.out.println("Lương cơ bản: " + basicSalary);
         }
     }
 
-    public void displayInfo(){
-        System.out.println("Ma san pham :" +productId);
-        System.out.println("Ten san pham :"+productName);
-        System.out.println("Gia san pham :"+price);
-        System.out.println("---------------------");
+    // ===== Lớp con =====
+    static class Manager extends Employee {
+        private String department;
+
+        // Constructor sử dụng super()
+        public Manager(String name, double basicSalary, String department) {
+            super(name, basicSalary); // phải là dòng đầu tiên
+            this.department = department;
+        }
+
+        // Hiển thị đầy đủ thông tin
+        public void displayInfo() {
+            super.displayInfo(); // gọi lại method của lớp cha
+            System.out.println("Phòng ban: " + department);
+        }
     }
-}
 
-public class B3 {
-    public static void main(String[] args){
-        Product product1 = new Product("SP01" , "Iphone 17" , 150000000);
+    // ===== Main =====
+    public static void main(String[] args) {
+        Manager manager = new Manager(
+                "Nguyễn Văn A",
+                15000000,
+                "Công nghệ thông tin"
+        );
 
-        product1.displayInfo();
-
-        product1.setPrice(-1500000000);
-
-        product1.displayInfo();
-
-        product1.setPrice(150000000);
-
-        product1.displayInfo();
+        manager.displayInfo();
     }
 }
