@@ -1,76 +1,93 @@
-class User{
-    private int userId;
-    private String username;
-    private String password;
-    private String email;
-
-    private boolean passwordValid = true;
-    private boolean emailValid = true;
-
-    public User(int userId , String username , String password , String email){
-        this.userId = userId;
-        this.username = username;
-        setPassword(password);
-        setEmail(email);
-    }
-
-    public int getUserId(){
-        return userId;
-    }
-
-    public String getUsername(){
-        return username;
-    }
-
-    public String getEmail(){
-        return email;
-    }
-
-    public void setPassword(String password){
-        if(password != null && !password.trim().isEmpty()){
-            this.password = password;
-            passwordValid = true;
-        }else{
-            this.password = password;
-            passwordValid = false;
-        }
-    }
-
-    public void setEmail(String email){
-        if(email != null && email.contains("@")){
-            this.email = email;
-            emailValid = true;
-        }else{
-            this.email = email;
-            emailValid = false;
-        }
-    }
-
-    public void displayInfo(){
-        System.out.println("Ma nguoi dung :"+userId);
-        System.out.println("Ten nguoi dung :"+username);
-        if(emailValid){
-            System.out.println("Email :"+email);
-        }else{
-            System.out.println("Email khong hop le");
-        }
-        if(passwordValid){
-            System.out.println("Password :"+password);
-        }else{
-            System.out.println("Password khong duoc rong");
-        }
-        System.out.println("--------------------");
-    }
-}
+import java.util.ArrayList;
+import java.util.List;
 
 public class B6 {
-    public static void main(String[] args){
-        User user1 = new User(1 , "ngo quang anh" , "190303" , "ngoquanganh2003a@gmail.com");
-        User user2 = new User(2 , "anh quang" , "" , "anhquang@gmail.com");
-        User user3 = new User(3 , "quang anh" , "190303" , "anhquang");
 
-        user1.displayInfo();
-        user2.displayInfo();
-        user3.displayInfo();
+    // ===== LỚP CHA TRỪU TƯỢNG =====
+    static abstract class Shape {
+        public abstract double calculateArea();
+        public abstract String getInfo();
+    }
+
+    // ===== HÌNH TRÒN =====
+    static class Circle extends Shape {
+        private double radius;
+
+        public Circle(double radius) {
+            this.radius = radius;
+        }
+
+        // ===== OVERRIDING =====
+        @Override
+        public double calculateArea() {
+            return Math.PI * radius * radius;
+        }
+
+        @Override
+        public String getInfo() {
+            return "Hình tròn (r=" + radius + ")";
+        }
+    }
+
+    // ===== HÌNH CHỮ NHẬT / HÌNH VUÔNG =====
+    static class Rectangle extends Shape {
+        private double width;
+        private double height;
+
+        // ===== OVERLOADING CONSTRUCTOR (Hình chữ nhật) =====
+        public Rectangle(double width, double height) {
+            this.width = width;
+            this.height = height;
+        }
+
+        // ===== OVERLOADING CONSTRUCTOR (Hình vuông) =====
+        public Rectangle(double side) {
+            this.width = side;
+            this.height = side;
+        }
+
+        // ===== OVERRIDING =====
+        @Override
+        public double calculateArea() {
+            return width * height;
+        }
+
+        @Override
+        public String getInfo() {
+            if (width == height) {
+                return "Hình vuông (cạnh " + width + ")";
+            }
+            return "Hình chữ nhật (" + width + " x " + height + ")";
+        }
+    }
+
+    // ===== MAIN =====
+    public static void main(String[] args) {
+
+        List<Shape> shapes = new ArrayList<>();
+
+        // Sử dụng Overloading constructor
+        shapes.add(new Circle(5));
+        shapes.add(new Rectangle(3, 4));
+        shapes.add(new Rectangle(6)); // Hình vuông
+
+        double totalArea = 0;
+        int index = 1;
+
+        System.out.println("Kết quả tính toán hình học:\n");
+
+        for (Shape s : shapes) {
+            double area = s.calculateArea(); // OVERRIDING → Runtime
+            totalArea += area;
+
+            System.out.println(index + ". " + s.getInfo()
+                    + " - Diện tích: "
+                    + String.format("%.2f", area));
+            System.out.println();
+            index++;
+        }
+
+        System.out.println("=> Tổng diện tích các hình: "
+                + String.format("%.2f", totalArea));
     }
 }
