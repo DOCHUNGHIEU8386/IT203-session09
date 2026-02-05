@@ -1,32 +1,53 @@
-import java.time.LocalDate;
+public class Bai1 {
 
-class Student{
-    private String studentId;
-    private String fullName;
-    private LocalDate dateOfBirth;
-    private double averageScore;
+    // ===== Lớp Person =====
+    static class Person {
+        protected String name;
+        protected int age;
 
-    public Student(String studentId , String fullName , LocalDate dateOfBirth , double averageScore){
-        this.studentId = studentId;
-        this.fullName = fullName;
-        this.dateOfBirth = dateOfBirth;
-        this.averageScore = averageScore;
+        // Constructor
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        // Phương thức hiển thị thông tin
+        public void displayInfo() {
+            System.out.println("Họ tên: " + name);
+            System.out.println("Tuổi: " + age);
+        }
     }
 
-    public void displayInfo(){
-        System.out.println("Ma sinh vien : " +studentId);
-        System.out.println("Ho ten sinh vien : "+fullName);
-        System.out.println("Ngay sinh : "+dateOfBirth);
-        System.out.println("Diem trung binh : "+averageScore);
-        System.out.println("------------------------------");
-    }
-}
+    // ===== Lớp Student kế thừa Person =====
+    static class Student extends Person {
+        private String studentId;
+        private double avgScore;
 
-public class B1{
+        // Constructor
+        public Student(String name, int age, String studentId, double avgScore) {
+            super(name, age); // gọi constructor lớp cha
+            this.studentId = studentId;
+            this.avgScore = avgScore;
+        }
+
+        // Ghi đè phương thức hiển thị
+        @Override
+        public void displayInfo() {
+            super.displayInfo(); // dùng lại method lớp cha
+            System.out.println("Mã sinh viên: " + studentId);
+            System.out.println("Điểm trung bình: " + avgScore);
+        }
+    }
+
+    // ===== Main =====
     public static void main(String[] args) {
-        Student student1 = new Student("SV1" , "Ngo Quang Anh" , LocalDate.of(2003 , 3 , 19) , 8.50);
-        Student student2 = new Student("SV2" , "Anh Quang" , LocalDate.of(2006 , 2 , 12) , 10);
-        student1.displayInfo();
-        student2.displayInfo();
+        Student st = new Student(
+                "Đỗ Chung Hiếu",
+                20,
+                "SV001",
+                8.2
+        );
+
+        st.displayInfo();
     }
 }
