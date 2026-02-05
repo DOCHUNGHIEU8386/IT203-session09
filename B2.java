@@ -1,35 +1,35 @@
-class Account{
-    private String username;
-    private String password;
-    private String email;
+public class Bai2 {
 
-    public Account(String username , String password , String email){
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    // ===== Lớp cha =====
+    static class Animal {
+        public void sound() {
+            System.out.println("Động vật phát ra âm thanh");
+        }
     }
 
-    public void changePassword(String newPassword){
-        this.password = newPassword;
-        System.out.println("Doi mat khau thanh cong");
+    // ===== Lớp Dog =====
+    static class Dog extends Animal {
+        @Override
+        public void sound() {
+            System.out.println("Chó sủa: Gâu gâu");
+        }
     }
 
-    public void displayInfo(){
-        System.out.println("Username : "+username);
-        System.out.println("Email : "+email);
-        System.out.println("Password : ********");
-        System.out.println("---------------");
+    // ===== Lớp Cat =====
+    static class Cat extends Animal {
+        @Override
+        public void sound() {
+            System.out.println("Mèo kêu: Meo meo");
+        }
     }
-}
 
-public class B2 {
-    public static void main(String[] args){
-        Account account1 = new Account("quanganh" , "190303" , "ngoquanganh2003a@gmail.com");
+    // ===== Main =====
+    public static void main(String[] args) {
 
-        account1.displayInfo();
+        Animal a1 = new Dog(); // đa hình
+        Animal a2 = new Cat();
 
-        account1.changePassword("0386878941");
-
-        account1.displayInfo();
+        a1.sound(); // gọi sound() của Dog
+        a2.sound(); // gọi sound() của Cat
     }
 }
