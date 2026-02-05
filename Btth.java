@@ -1,99 +1,93 @@
-class BankAccount {
-    // ===== Thuộc tính (Encapsulation) =====
-    private String accountNumber;
-    private String accountHolder;
-    private double balance;
+// ================== LỚP CHA ==================
+class Employee {
+    protected String name;
+    protected double baseSalary;
 
-    // ===== Constructor không tham số =====
-    public BankAccount() {
-        this.accountNumber = "UNKNOWN";
-        this.accountHolder = "NO NAME";
-        this.balance = 0;
+    // Constructor lớp cha
+    public Employee(String name, double baseSalary) {
+        this.name = name;
+        this.baseSalary = baseSalary;
     }
 
-    // ===== Constructor có tham số (dùng this) =====
-    public BankAccount(String accountNumber, String accountHolder, double balance) {
-        this.accountNumber = accountNumber;
-        this.accountHolder = accountHolder;
-        setBalance(balance); // kiểm tra qua setter
+    // Phương thức tính lương (sẽ bị ghi đè)
+    double getSalary() {
+        return baseSalary;
     }
 
-    // ===== Getter =====
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public String getAccountHolder() {
-        return accountHolder;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    // ===== Setter (kiểm tra dữ liệu hợp lệ) =====
-    public void setBalance(double balance) {
-        if (balance >= 0) {
-            this.balance = balance;
-        } else {
-            System.out.println("So du khong duoc am. Gan ve 0.");
-            this.balance = 0;
-        }
-    }
-
-    // ===== Nghiệp vụ: Nạp tiền =====
-    public void deposit(double amount) {
-        if (amount > 0) {
-            balance += amount;
-            System.out.println("Nap tien thanh cong: " + amount);
-        } else {
-            System.out.println("So tien nap phai > 0");
-        }
-    }
-
-    // ===== Nghiệp vụ: Rút tiền =====
-    public void withdraw(double amount) {
-        if (amount <= 0) {
-            System.out.println("So tien rut phai > 0");
-        } else if (amount > balance) {
-            System.out.println("So du khong du de rut");
-        } else {
-            balance -= amount;
-            System.out.println("Rut tien thanh cong: " + amount);
-        }
-    }
-
-    // ===== Hiển thị thông tin =====
-    public void displayInfo() {
-        System.out.println("So tai khoan: " + accountNumber);
-        System.out.println("Chu tai khoan: " + accountHolder);
-        System.out.println("So du: " + balance);
-        System.out.println("---------------------------");
+    void showInfo() {
+        System.out.println("Tên: " + name);
+        System.out.println("Lương cơ bản: " + baseSalary);
     }
 }
 
-public class Btth {
+// ================== LỚP CON: MANAGER ==================
+class Manager extends Employee {
+    private String department;
+
+    public Manager(String name, double baseSalary, String department) {
+        super(name, baseSalary); // gọi constructor lớp cha
+        this.department = department;
+    }
+
+    // Ghi đè phương thức
+    @Override
+    double getSalary() {
+        return super.getSalary() + 5000; // phụ cấp quản lý
+    }
+
+    void showInfo() {
+        super.showInfo();
+        System.out.println("Phòng ban: " + department);
+        System.out.println("Lương thực nhận: " + getSalary());
+    }
+}
+
+// ================== LỚP CON: DEVELOPER ==================
+class Developer extends Employee {
+
+    public Developer(String name, double baseSalary) {
+        super(name, baseSalary);
+    }
+
+    // Overriding
+    @Override
+    double getSalary() {
+        return baseSalary + 3000; // phụ cấp dev
+    }
+
+    // Overloading (cùng tên, khác tham số)
+    double getSalary(int bonus) {
+        return getSalary() + bonus;
+    }
+}
+
+// ================== CLASS MAIN ==================
+public class EmployeeManagement {
+
     public static void main(String[] args) {
 
-        // Tạo đối tượng bằng constructor không tham số
-        BankAccount acc1 = new BankAccount();
+        // ====== ĐA HÌNH ======
+        Employee e1 = new Manager("Nguyễn Văn A", 10000, "IT");
+        Employee e2 = new Developer("Trần Văn B", 9000);
 
-        // Tạo đối tượng bằng constructor có tham số
-        BankAccount acc2 = new BankAccount("ACB001", "Ngo Quang Anh", 5000);
+        System.out.println("=== ĐA HÌNH ===");
+        System.out.println("Lương Manager: " + e1.getSalary());
+        System.out.println("Lương Developer: " + e2.getSalary());
 
-        // Hiển thị ban đầu
-        acc1.displayInfo();
-        acc2.displayInfo();
+        // ====== KIỂU KHAI BÁO & KIỂU THỰC TẾ ======
+        System.out.println("\n=== instanceof & ÉP KIỂU ===");
+        if (e2 instanceof Developer) {
+            Developer dev = (Developer) e2; // downcasting
+            System.out.println("Lương Dev + thưởng: " + dev.getSalary(2000));
+        }
 
-        // Thao tác với acc1
-        acc1.deposit(2000);
-        acc1.withdraw(500);
-        acc1.displayInfo();
+        // ====== HIỂN THỊ THÔNG TIN ======
+        System.out.println("\n=== THÔNG TIN MANAGER ===");
+        ((Manager) e1).showInfo();
 
-        // Thao tác với acc2
-        acc2.deposit(3000);
-        acc2.withdraw(10000); // rút quá số dư
-        acc2.withdraw(2000);
-        acc2.displayInfo();
+        // ====== SO SÁNH ======
+        System.out.println("\n=== GHI CHÚ ===");
+        System.out.println("Overriding: quyết định lúc runtime");
+        System.out.println("Overloading: quyết định lúc compile-time");
     }
 }
